@@ -122,11 +122,11 @@ Original code 2006 June 05 by relicoder.
 
 #ifdef COMPILE_SQLITE_EXTENSIONS_AS_LOADABLE_MODULE
 #include "sqlite3ext.h"
-SQLITE_EXTENSION_INIT1
 #else
 #include "sqlite3.h"
 #endif
 
+#include "regexp.c"
 #include <ctype.h>
 /* relicoder */
 #include <math.h>
@@ -1836,6 +1836,7 @@ int sqlite3_extension_init(
     sqlite3 *db, char **pzErrMsg, const sqlite3_api_routines *pApi){
   SQLITE_EXTENSION_INIT2(pApi);
   RegisterExtensionFunctions(db);
+  sqlite3_create_function(db, "regexp", 2, SQLITE_UTF8, 0, re_sql_func, 0, 0);
   return 0;
 }
 #endif /* COMPILE_SQLITE_EXTENSIONS_AS_LOADABLE_MODULE */
